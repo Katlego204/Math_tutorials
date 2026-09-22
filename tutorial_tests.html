@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math 144: Tutorial Tests</title>
+    <style>
+        :root {
+            --bg: #0b0f19;
+            --surface: #1a2332;
+            --surface-hover: #232e42;
+            --border: #2e3b52;
+            --primary: #10b981;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 20px;
+        }
+
+        header h1 {
+            color: var(--primary);
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .tab-btn {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            border-color: var(--primary);
+            color: var(--text-main);
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: #000;
+            border-color: var(--primary);
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        .question-title {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 16px;
+            background: rgba(11, 15, 25, 0.5);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-label:hover {
+            border-color: var(--primary);
+            background: var(--surface-hover);
+        }
+
+        input[type="radio"] {
+            margin-top: 4px;
+            accent-color: var(--primary);
+            width: 18px;
+            height: 18px;
+        }
+        
+        .test-header {
+            margin-bottom: 24px;
+            color: var(--text-muted);
+        }
+    </style>
+    
+    <!-- MathJax for LaTeX Rendering -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Math 144: Tutorial Tests</h1>
+        <p>Interactive Multiple-Choice Question Bank</p>
+    </header>
+
+    <div class="tabs" id="tabContainer">
+        <!-- Tabs injected via JS -->
+    </div>
+
+    <div id="contentContainer">
+        <!-- Questions injected via JS -->
+    </div>
+</div>
+
+<script>
+    // Double-escaped backslashes are required for LaTeX inside JS strings.
+    const testData = [
+        {
+            id: "1A",
+            title: "Tut test 1A",
+            date: "29 July 2026[cite: 5]",
+            questions: [
+                {
+                    q: "Find $\\arcsin(\\sin(-\\frac{5\\pi}{2}))$.[cite: 5]",
+                    options: [
+                        "(A) $-\\frac{5\\pi}{2}$[cite: 5]",
+                        "(B) 0[cite: 5]",
+                        "(C) $-\\frac{\\pi}{2}$[cite: 5]",
+                        "(D) $\\frac{\\pi}{2}$[cite: 5]",
+                        "(E) undefined / ongedefinieerd[cite: 5]"
+                    ]
+                },
+                {
+                    q: "Find $\\frac{d}{dx} \\arctan(x^{\\frac{3}{2}})$, $x>0$.[cite: 5]",
+                    options: [
+                        "(A) $\\frac{3\\sqrt{x}}{2(1+x^{3})}$[cite: 5]",
+                        "(B) $\\frac{1}{1+x^{3}}$[cite: 5]",
+                        "(C) $\\frac{2\\sqrt{x}}{1+x^{3}}$[cite: 5]",
+                        "(D) $\\frac{3\\sqrt{x}}{2(1-x^{3})}$[cite: 5]",
+                        "(E) None of the above / Geen van die bogenoemde[cite: 5]"
+                    ]
+                },
+                {
+                    q: "Calculate $\\int\\frac{1}{\\sqrt{1-(3x+1)^{2}}}dx$.[cite: 5]",
+                    options: [
+                        "(A) $\\arcsin(3x+1)+C$[cite: 5]",
+                        "(B) $\\frac{1}{3}\\arcsin(3x+1)+C$[cite: 5]",
+                        "(C) $\\frac{1}{3}\\arccos(3x+1)+C$[cite: 5]",
+                        "(D) $-\\frac{1}{3}\\arcsin(3x+1)+C$[cite: 5]",
+                        "(E) $3 \\arcsin(3x+1)+C$[cite: 5]"
+                    ]
+                },
+                {
+                    q: "Determine $\\sinh(2 \\ln 2)$.[cite: 5]",
+                    options: [
+                        "(A) 4[cite: 5]",
+                        "(B) $\\frac{15}{8}$[cite: 5]",
+                        "(C) $\\frac{17}{8}$[cite: 5]",
+                        "(D) $\\frac{3}{2}$[cite: 5]",
+                        "(E) None of the above / Geen van die bogenoemde[cite: 5]"
+                    ]
+                },
+                {
+                    q: "Determine $\\frac{d}{dx}[\\cosh(2x^{2}-1)]$.[cite: 5]",
+                    options: [
+                        "(A) $4x \\sinh(2x^{2}-1)$[cite: 5]",
+                        "(B) $4x \\cosh(2x^{2}-1)$[cite: 5]",
+                        "(C) $2x \\sinh(2x^{2}-1)$[cite: 5]",
+                        "(D) $\\sinh(2x^{2}-1)$[cite: 5]",
+                        "(E) None of the above / Geen van die bogenoemde[cite: 5]"
+                    ]
+                }
+            ]
+        },
+        {
+            id: "2A",
+            title: "Tut test 2A",
+            date: "5 August 2026[cite: 5]",
+            questions: [
+                {
+                    q: "Evaluate the following limit. / Evalueer die volgende limiet. $\\lim_{x\\rightarrow0}\\frac{x \\sin(x)}{1-\\cos(x)}=$[cite: 5]",
+                    options: [
+                        "(A) 0[cite: 5]",
+                        "(B) 1[cite: 5]",
+                        "(C) 2[cite: 5]",
+                        "(D) $\\infty$[cite: 5]",
+                        "(E) None of these. / Geeneen van hierdie.[cite: 5]"
+                    ]
+                },
+                {
+                    q: "Evaluate the following limit. / Evalueer die volgende limiet. $\\lim_{x\\rightarrow\\infty}(1+\\frac{3}{x})^{2x}=$[cite: 5]",
+                    options: [
+                        "(A) 0[cite: 5]",
+                        "(B) $\\ln(3)$[cite: 5]",
+                        "(C) $e^{3}$[cite: 5]",
+                        "(D) $e^{6}$[cite: 5]",
+                        "(E) None of these. / Geeneen van hierdie.[cite: 5]"
+                    ]
+                },
+                {
+                    q: "Evaluate the following limit. / Evalueer die volgende limiet. $\\lim_{x\\rightarrow0^{+}}\\csc(x)\\cdot \\ln(x)=$[cite: 5]",
+                    options: [
+                        "(A) $-\\infty$[cite: 5]",
+                        "(B) 0[cite: 5]",
+                        "(C) 1[cite: 5]",
+                        "(D) $\\infty$[cite: 5]",
+                        "(E) None of these. / Geeneen van hierdie.[cite: 5]"
+                    ]
+                },
+                {
+                    q: "Evaluate the following integral. / Evalueer die volgende integraal. $\\int \\ln\\sqrt[3]{x}dx$[cite: 5]",
+                    options: [
+                        "(A) $\\sqrt[3]{x}-\\frac{x}{3}+C$[cite: 5]",
+                        "(B) $\\frac{x \\ln(x)-x+C}{3}$[cite: 5]",
+                        "(C) $x\\ln \\sqrt[3]{x}-3(x+C)$[cite: 5]",
+                        "(D) $3x \\ln(x)-\\frac{x}{3}+C$[cite: 5]",
+                        "(E) None of these. / Geeneen van hierdie.[cite: 5]"
+                    ]
+                },
+                {
+                    q: "Evaluate the following integral. / Evalueer die volgende integraal. $\\int x \\sinh(x)dx$[cite: 5]",
+                    options: [
+                        "(A) $x \\cosh(x)-\\sinh(x)+C$[cite: 5]",
+                        "(B) $\\cosh(x)-x \\sinh(x)+C$[cite: 5]",
+                        "(C) $x \\sinh(x)-\\cosh(x)+C$[cite: 5]",
+                        "(D) $\\sinh(x)-x \\cosh(x)+C$[cite: 5]",
+                        "(E) None of these. / Geeneen van hierdie.[cite: 5]"
+                    ]
+                }
+            ]
+        },
+        {
+            id: "3A",
+            title: "Tut test 3A",
+            date: "26 August 2026[cite: 5]",
+            questions: [
+                {
+                    q: "Consider the differential equation / Beskou die differensiaalvergelyking $x\\frac{dy}{dx}=xe^{-x}-2xy, x>0$. Which of the following is the correct integrating factor?[cite: 5]",
+                    options: [
+                        "(A) $e^{-2x}$[cite: 5]",
+                        "(B) $e^{2x}$[cite: 5]",
+                        "(C) $e^{xe^{-x}}$[cite: 5]",
+                        "(D) $e^{x^{2}}$[cite: 5]",
+                        "(E) None of these. / Geeneen van hierdie.[cite: 5]"
+                    ]
+                },
+                {
+                    q: "Solve the following initial value problem: / Los die volgende beginwaardeprobleem op: $\\frac{dy}{dx}=(y+1)(2x-3), y(2)=-2$.[cite: 5]",
+                    options: [
+                        "(A) $y=-e^{2x^{2}-3x+2}-1$[cite: 5]",
+                        "(B) $y=-e^{x^{2}-3x-2}+1$[cite: 5]",
+                        "(C) $y=-e^{x^{2}-3x+2}-1$[cite: 5]",
+                        "(D) $y=-e^{x^{2}-3x+1}-1$[cite: 5]",
+                        "(E) None of these. / Geeneen van hierdie.[cite: 5]"
+                    ]
+                },
+                {
+                    q: "Which one of the following first-order differential equations is separable, but not linear?[cite: 5]",
+                    options: [
+                        "(A) $y^{\\prime}=y \\sin(x)+3y$[cite: 5]",
+                        "(B) $3y^{\\prime}=x^{2}y+5$[cite: 5]",
+                        "(C) $2y^{\\prime}+xy^{2}=x$[cite: 5]",
+                        "(D) $3y^{2}y^{\\prime}=xy^{3}, y>0$[cite: 5]",
+                        "(E) None of these. / Geeneen van hierdie.[cite: 5]"
+                    ]
+                },
+                {
+                    q: "A certain substance decays exponentially. Its half-life is 4 hours. If initially there are 640 mg of the substance, how much remains after 12 hours?[cite: 5]",
+                    options: [
+                        "(A) 80 mg[cite: 5]",
+                        "(B) 40 mg[cite: 5]",
+                        "(C) 160 mg[cite: 5]",
+                        "(D) 320 mg[cite: 5]",
+                        "(E) None of these. / Geeneen van hierdie.[cite: 5]"
+                    ]
+                },
+                {
+                    q: "Which of the following arguments are correct regarding the integral $\\int_{1}^{\\infty}\\frac{e^{-x}}{x^{2}+x}dx$?[cite: 5]",
+                    options: [
+                        "(A) It converges since, for $x\\ge1$, $0\\le\\frac{1}{x^{2}}\\le\\frac{e^{-x}}{x^{2}+x}$ and $\\int_{1}^{\\infty}\\frac{1}{x^{2}} dx$ converges.[cite: 5]",
+                        "(B) It diverges since, for $x\\ge1$, $0\\le e^{-x}\\le\\frac{e^{-x}}{x^{2}+x}$ and $\\int_{1}^{\\infty}e^{-x}dx$ diverges.[cite: 5]",
+                        "(C) It diverges since, for $x\\ge1$, $0\\le\\frac{e^{-x}}{x^{2}+x}\\le\\frac{1}{x}$ and $\\int_{1}^{\\infty}\\frac{1}{x}dx$ diverges.[cite: 5]",
+                        "(D) It converges since, for $x\\ge1$, $0\\le\\frac{e^{-x}}{x^{2}+x}\\le e^{-x}$ and $\\int_{1}^{\\infty}e^{-x}dx$ converges.[cite: 5]",
+                        "(E) None of these. / Geeneen van hierdie.[cite: 5]"
+                    ]
+                }
+            ]
+        },
+        {
+            id: "4A",
+            title: "Tut test 4A",
+            date: "2 September 2026[cite: 5]",
+            questions: [
+                {
+                    q: "Given the vectors $u=\\begin{bmatrix}3\\\\ 2\\\\ 4\\end{bmatrix}$ and $v=\\begin{bmatrix}-3\\\\ 1\\\\ 5\\end{bmatrix}$. Find the vector w that satisfies $2u-4(v-w)=w$.[cite: 5]",
+                    options: [
+                        "(A) $\\begin{bmatrix}-6\\\\ 0\\\\ -4\\end{bmatrix}$[cite: 5]",
+                        "(B) $\\begin{bmatrix}6\\\\ 0\\\\ 4\\end{bmatrix}$[cite: 5]",
+                        "(C) $\\begin{bmatrix}-6\\\\ 0\\\\ 4\\end{bmatrix}$[cite: 5]",
+                        "(D) $\\begin{bmatrix}-2\\\\ 0\\\\ 4\\end{bmatrix}$[cite: 5]",
+                        "(E) None of these. / Geeneen van hierdie.[cite: 5]"
+                    ]
+                },
+                {
+                    q: "Given vectors $u, v\\in\\mathbb{R}^{n}$ such that $(u-2v)\\cdot(u+2v)=9$ and $\vert{}\vert{}v\vert{}\vert{}=2$, determine $\vert{}\vert{}u\vert{}\vert{}$.[cite: 5]",
+                    options: [
+                        "(A) 3[cite: 5]",
+                        "(B) 4[cite: 5]",
+                        "(C) 5[cite: 5]",
+                        "(D) 7[cite: 5]",
+                        "(E) None of these. / Geeneen van hierdie.[cite: 5]"
+                    ]
+                },
+                {
+                    q: "Determine the values of a such that the vectors $u=\\begin{bmatrix}1\\\\ a^{2}\\\\ -1\\end{bmatrix}$ and $v=\\begin{bmatrix}a\\\\ 1\\\\ 2\\end{bmatrix}$ are orthogonal.[cite: 5]",
+                    options: [
+                        "(A) $a=-1$ or $a=2$[cite: 5]",
+                        "(B) $a=-2$ or $a=1$[cite: 5]",
+                        "(C) $a=-2$ or $a=-1$[cite: 5]",
+                        "(D) $a=1$ or $a=2$[cite: 5]",
+                        "(E) None of these. / Geeneen van hierdie.[cite: 5]"
+                    ]
+                },
+                {
+                    q: "Determine the angle between the vectors $u=\\begin{bmatrix}1\\\\ 1\\\\ 0\\end{bmatrix}$ and $v=\\begin{bmatrix}1\\\\ 0\\\\ 1\\end{bmatrix}$.[cite: 5]",
+                    options: [
+                        "(A) 0[cite: 5]",
+                        "(B) $\\frac{\\pi}{6}$[cite: 5]",
+                        "(C) $\\frac{\\pi}{4}$[cite: 5]",
+                        "(D) $\\frac{\\pi}{3}$[cite: 5]",
+                        "(E) None of these. / Geeneen van hierdie.[cite: 5]"
+                    ]
+                },
+                {
+                    q: "Given the vectors $x=\\begin{bmatrix}2\\\\ 1\\end{bmatrix}$ and $y=\\begin{bmatrix}3\\\\ 4\\end{bmatrix}$ in $\\mathbb{R}^{2}$, determine $proj_{x}(y)$.[cite: 5]",
+                    options: [
+                        "(A) $\\begin{bmatrix}2\\\\ 1\\end{bmatrix}$[cite: 5]",
+                        "(B) $\\begin{bmatrix}4\\\\ 2\\end{bmatrix}$[cite: 5]",
+                        "(C) $\\begin{bmatrix}3\\\\ 4\\end{bmatrix}$[cite: 5]",
+                        "(D) $\\begin{bmatrix}2\\\\ 4\\end{bmatrix}$[cite: 5]",
+                        "(E) None of these. / Geeneen van hierdie.[cite: 5]"
+                    ]
+                }
+            ]
+        },
+        {
+            id: "5A",
+            title: "Tut test 5A",
+            date: "16 September 2026[cite: 5]",
+            questions: [
+                {
+                    q: "The intersection of the following three planes $2x-3y+4z=2$, $6x-9y-12z=3$, $-4x+6y-8z=-4$ is[cite: 5]",
+                    options: [
+                        "(A) the empty set / die leë versameling[cite: 5]",
+                        "(B) a point / 'n punt[cite: 5]",
+                        "(C) two points / twee punte[cite: 5]",
+                        "(D) a line / 'n lyn[cite: 5]",
+                        "(E) None of these. / Geeneen van hierdie.[cite: 5]"
+                    ]
+                },
+                {
+                    q: "For which values of a and b do the following lines not intersect. $x=t\\begin{bmatrix}2\\\\ -1\\\\ 0\\end{bmatrix}+\\begin{bmatrix}1\\\\ 2\\\\ 3\\end{bmatrix}$ and $y=s\\begin{bmatrix}1\\\\ 0\\\\ -1\\end{bmatrix}+\\begin{bmatrix}a\\\\ b\\\\ 0\\end{bmatrix}$[cite: 5]",
+                    options: [
+                        "(A) $a=0, b=4$[cite: 5]",
+                        "(B) $a=2, b=3$[cite: 5]",
+                        "(C) $a=4, b=2$[cite: 5]",
+                        "(D) $a=6, b=1$[cite: 5]",
+                        "(E) None of these. / Geeneen van hierdie.[cite: 5]"
+                    ]
+                },
+                {
+                    q: "Find the distance from the point $P=(2,0,1)$ to the line $x=t\\begin{bmatrix}0\\\\ 0\\\\ -2\\end{bmatrix}$[cite: 5]",
+                    options: [
+                        "(A) 0[cite: 5]",
+                        "(B) 1[cite: 5]",
+                        "(C) 2[cite: 5]",
+                        "(D) $\\sqrt{5}$[cite: 5]",
+                        "(E) None of these. / Geeneen van hierdie.[cite: 5]"
+                    ]
+                },
+                {
+                    q: "Which of the following represents the solutions to the system below? $2x+4y+2z=2$, $x-y+z=4$, $z-x=1$[cite: 5]",
+                    options: [
+                        "(A) $\\begin{bmatrix}x\\\\ y\\\\ z\\end{bmatrix}=\\begin{bmatrix}1\\\\ -1\\\\ 2\\end{bmatrix}$[cite: 5]",
+                        "(B) $\\begin{bmatrix}x\\\\ y\\\\ z\\end{bmatrix}=\\begin{bmatrix}0\\\\ 0\\\\ 1\\end{bmatrix}+t\\begin{bmatrix}1\\\\ -1\\\\ 1\\end{bmatrix}$[cite: 5]",
+                        "(C) $\\begin{bmatrix}x\\\\ y\\\\ z\\end{bmatrix}=\\begin{bmatrix}1\\\\ -1\\\\ 2\\end{bmatrix}+t\\begin{bmatrix}1\\\\ -1\\\\ 1\\end{bmatrix}$[cite: 5]",
+                        "(D) There are no solutions. / Daar is geen oplossings nie.[cite: 5]",
+                        "(E) None of these. / Geeneen van hierdie.[cite: 5]"
+                    ]
+                }
+            ]
+        }
+    ];
+
+    function initUI() {
+        const tabContainer = document.getElementById('tabContainer');
+        
+        // Render tabs
+        testData.forEach((test, index) => {
+            const btn = document.createElement('button');
+            btn.className = `tab-btn ${index === 0 ? 'active' : ''}`;
+            btn.textContent = test.title;
+            btn.onclick = () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                renderTest(test.id);
+            };
+            tabContainer.appendChild(btn);
+        });
+
+        // Initial render
+        renderTest(testData[0].id);
+    }
+
+    function renderTest(testId) {
+        const test = testData.find(t => t.id === testId);
+        let html = `<div class="test-header"><h2>${test.title}</h2><p>Date: ${test.date}</p></div>`;
+        
+        test.questions.forEach((q, i) => {
+            html += `<div class="card">
+                        <div class="question-title">Question ${i + 1}</div>
+                        <div class="question-text">${q.q}</div>
+                        <div class="options">`;
+            
+            q.options.forEach((opt, j) => {
+                html += `<label class="option-label">
+                            <input type="radio" name="q${testId}_${i}" value="${j}">
+                            <span>${opt}</span>
+                         </label>`;
+            });
+            
+            html += `</div></div>`;
+        });
+
+        document.getElementById('contentContainer').innerHTML = html;
+
+        // Force MathJax to re-render the newly injected DOM elements
+        if (window.MathJax) {
+            MathJax.typesetPromise().catch((err) => console.log('MathJax error: ', err.message));
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", initUI);
+</script>
+
+</body>
+</html>
